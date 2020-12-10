@@ -73,6 +73,9 @@ void Error_Handler(void);
 #define LED2_GPIO_Port GPIOC
 /* USER CODE BEGIN Private defines */
 
+#define USB_OUT_SIZE  64
+#define USB_IN_SIZE   64
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

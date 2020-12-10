@@ -662,8 +662,12 @@ static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 
   /* USB data will be immediately processed, this allow next USB traffic being
   NAKed till the end of the application processing */
-  ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)->OutEvent(hhid->Report_buf[0],
-                                                            hhid->Report_buf[1]);
+	
+	/*[Tony]Follow ST Training Course*/
+  ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)->OutEvent(hhid->Report_buf);
+	/* [Tony]:Cubemx GenCode without this code, but ST Training Course has.... */
+		USBD_LL_PrepareReceive(pdev, CUSTOM_HID_EPOUT_ADDR , hhid->Report_buf,
+	                         USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
 
   return (uint8_t)USBD_OK;
 }
@@ -706,8 +710,8 @@ static uint8_t USBD_CUSTOM_HID_EP0_RxReady(USBD_HandleTypeDef *pdev)
 
   if (hhid->IsReportAvailable == 1U)
   {
-    ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)->OutEvent(hhid->Report_buf[0],
-                                                              hhid->Report_buf[1]);
+		/*[Tony]Follow ST Training Course*/
+    ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)->OutEvent(hhid->Report_buf);
     hhid->IsReportAvailable = 0U;
   }
 

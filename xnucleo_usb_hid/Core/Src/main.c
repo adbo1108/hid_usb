@@ -67,24 +67,16 @@ int fputc(int32_t ch, FILE *f)
 	USART2->DR = (uint8_t) ch;  
 	return ch;
 }
-uint8_t send_data[1] ,result;
+uint8_t send_data[USB_IN_SIZE] ,result;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	switch(GPIO_Pin)
 	{
 		case GPIO_PIN_13:
 		send_data[0]=0x02 ;
-		//send_data[1]=0x04;
-#if 0			
-		send_data[2]=20 ;
-		send_data[3]=0 ;
-		send_data[4]=0 ;
-		send_data[5]=0 ;
-		send_data[6]=0 ;
-		send_data[7]=0 ;
-#endif
+
 		
-		result = USBD_CUSTOM_HID_SendReport_FS(send_data,1) ;
+		result = USBD_CUSTOM_HID_SendReport_FS(send_data,64) ;
 		if(result !=USBD_OK)
 		{
 			
@@ -127,7 +119,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
-	printf("USB HID \n\r");
+	printf("USB HID222 \n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */
