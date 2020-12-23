@@ -67,16 +67,21 @@ int fputc(int32_t ch, FILE *f)
 	USART2->DR = (uint8_t) ch;  
 	return ch;
 }
-uint8_t send_data[USB_IN_SIZE] ,result;
+uint8_t send_data[128] ,result , i;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	switch(GPIO_Pin)
 	{
 		case GPIO_PIN_13:
-		send_data[0]=0x02 ;
-
 		
-		result = USBD_CUSTOM_HID_SendReport_FS(send_data,64) ;
+		// assign Report ID
+		send_data[0]=0x02;
+		for(i=1;i<9;i++)
+		{
+			send_data[i]=0x01;
+		}	
+		
+		result = USBD_CUSTOM_HID_SendReport_FS(send_data,9) ;
 		if(result !=USBD_OK)
 		{
 			

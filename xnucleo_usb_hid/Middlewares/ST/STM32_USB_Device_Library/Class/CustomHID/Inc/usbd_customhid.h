@@ -42,10 +42,10 @@ extern "C" {
   * @{
   */
 #define CUSTOM_HID_EPIN_ADDR                         0x81U
-#define CUSTOM_HID_EPIN_SIZE                         USB_IN_SIZE  //64
+#define CUSTOM_HID_EPIN_SIZE                         USB_IN_SIZE  
 
 #define CUSTOM_HID_EPOUT_ADDR                        0x01U
-#define CUSTOM_HID_EPOUT_SIZE                        USB_OUT_SIZE  //64
+#define CUSTOM_HID_EPOUT_SIZE                        USB_OUT_SIZE  
 
 #define USB_CUSTOM_HID_CONFIG_DESC_SIZ               41U
 #define USB_CUSTOM_HID_DESC_SIZ                      9U

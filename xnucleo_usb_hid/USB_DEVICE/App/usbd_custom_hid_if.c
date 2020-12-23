@@ -76,7 +76,7 @@
   */
 
 /* USER CODE BEGIN PRIVATE_MACRO */
-uint8_t buffer[64];
+uint8_t buffer[USB_OUT_SIZE];
 
 /* USER CODE END PRIVATE_MACRO */
 
@@ -96,15 +96,21 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
 	0x06, 0x00, 0xff,               //Usage Page(Undefined )
 	    0x09, 0x01,                    // USAGE (Undefined)
 	    0xa1, 0x01,                    // COLLECTION (Application)
+		
 	    0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
 	    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
 	    0x75, 0x08,                    //   REPORT_SIZE (8)
-	    0x95, 0x40,                    //   REPORT_COUNT (64)
+	
+		//Report ID
+		 0x85,0x02,                     // REPORT_ID(2)
+	    0x95, 0x08,                    //   REPORT_COUNT (8))
 	    0x09, 0x01,                    //   USAGE (Undefined)
 	    0x81, 0x02,                    //   INPUT (Data,Var,Abs)
+		
 	    0x95, 0x40,                    //   REPORT_COUNT (64)
 	    0x09, 0x01,                    //   USAGE (Undefined)
 	    0x91, 0x02,                    //   OUTPUT (Data,Var,Abs)
+	
 	    0x95, 0x01,                    //   REPORT_COUNT (1)
 	    0x09, 0x01,                    //   USAGE (Undefined)
 	    0xb1, 0x02,                    //   FEATURE (Data,Var,Abs)
@@ -192,8 +198,16 @@ static int8_t CUSTOM_HID_DeInit_FS(void)
 static int8_t CUSTOM_HID_OutEvent_FS(uint8_t* state)
 {
   /* USER CODE BEGIN 6 */
-  memcpy(buffer,state,0x40);
-	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,(uint8_t*)buffer,0x40);
+	uint8_t i = 0 ;
+  memcpy(buffer,state,65);
+	/*Just loopback, ST Training Course Tools can use*/
+//	USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS,(uint8_t*)buffer,USB_IN_SIZE);
+	for(i=0; i<USB_OUT_SIZE ; i++)
+	{
+		printf("Receive Report_buf[%d]=0x%x\n\r",i,buffer[i]);
+	}	
+	
+	
 #if 0
   /* Start next USB packet transfer once data processing is completed */
   USBD_CUSTOM_HID_ReceivePacket(&hUsbDeviceFS);
