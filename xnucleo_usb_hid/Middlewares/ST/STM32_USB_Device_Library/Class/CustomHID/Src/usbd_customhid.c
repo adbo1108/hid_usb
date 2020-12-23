@@ -666,6 +666,7 @@ static uint8_t USBD_CUSTOM_HID_DataOut(USBD_HandleTypeDef *pdev, uint8_t epnum)
 	/*[Tony]Follow ST Training Course*/
   ((USBD_CUSTOM_HID_ItfTypeDef *)pdev->pUserData)->OutEvent(hhid->Report_buf);
 	/* [Tony]:Cubemx GenCode without this code, but ST Training Course has.... */
+  /* 不加這行，你只能收到一次, without USBD_LL_PrepareReceive ,you only can receive data just one time */
 		USBD_LL_PrepareReceive(pdev, CUSTOM_HID_EPOUT_ADDR , hhid->Report_buf,
 	                         USBD_CUSTOMHID_OUTREPORT_BUF_SIZE);
 
